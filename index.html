@@ -1,0 +1,156 @@
+<!doctype html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+	<title>XSS</title>
+
+	<link rel="stylesheet" href="css/reset.css">
+	<link rel="stylesheet" href="css/reveal.css">
+	<link rel="stylesheet" href="css/theme/black.css">
+
+	<!-- Theme used for syntax highlighting of code -->
+	<link rel="stylesheet" href="lib/css/monokai.css">
+
+	<!-- Printing and PDF exports -->
+	<script>
+		var link = document.createElement('link');
+		link.rel = 'stylesheet';
+		link.type = 'text/css';
+		link.href = window.location.search.match(/print-pdf/gi) ? 'css/print/pdf.css' : 'css/print/paper.css';
+		document.getElementsByTagName('head')[0].appendChild(link);
+	</script>
+</head>
+
+<body>
+	<div class="reveal">
+		<div class="slides">
+
+			<section data-background-image="./img/image1.jpg">
+			</section>
+
+			<section>
+				<h2 style="color:rgb(59, 128, 118);">What is cross-site scripting (XSS)?</h2>
+				<p>XSS is a code injection attack that allows an attacker to execute malicious script in another
+					user's browser</p>
+			</section>
+
+			<section>
+				<h2 style="color:rgb(59, 128, 118);">How XSS work?</h2>
+				<img data-src="./img/image2.jpg" height="450px" class="fragment" data-fragment-index="2"></img>
+			</section>
+
+			<section>
+				<h2 style="color:rgb(59, 128, 118);">What can XSS be used for?</h2>
+				<ul style="font-size: 35px; margin-top: 20px;">
+					<li>stealing cookie and session information</li>
+					<li>performing HTTP requests with the user’s session</li>
+					<li>redirecting users to hostile websites</li>
+					<li>accessing and manipulating client-side persistent storage</li>
+					<li>rewriting or manipulating in-browser applications</li>
+					<li>...</li>
+				</ul>
+			</section>
+
+			<section>
+				<h2 style="color:rgb(59, 128, 118);">What are the types of XSS attacks?</h2>
+				<ul>
+					<li>Reflected XSS</li>
+					<li>Stored XSS</li>
+					<li>DOM-based XSS</li>
+				</ul>
+			</section>
+
+			<section>
+				<h2 style="color:rgb(59, 128, 118);">Reflected cross-site scripting</h2>
+				<p>In a <span style="color:rgb(104, 126, 167); font-weight: bold">reflected XSS attack</span>, the
+					malicious string is part of the victim's request to the website.
+					The website then includes this malicious string in the response sent back to the user.</p>
+				<pre><code>http://example.com/search.php?q=<script>DoSomething();</script></code></pre>
+			</section>
+
+			<section>
+				<section>
+					<h2 style="color:rgb(59, 128, 118);">Stored cross-site scripting</h2>
+					<p><span style="color:rgb(104, 126, 167); font-weight: bold">Stored XSS</span> arises when an
+						application receives data from an untrusted source and includes that data
+						within its later HTTP responses in an unsafe way.</p>
+				</section>
+				<section>
+					Example:
+					<pre><code style="margin: 50px 0"><p>Hello, this is my message!</p></code></pre>
+					<pre class="fragment"><code><p><script>/* Bad stuff here... */</script></p></code></pre>
+				</section>
+			</section>
+
+			<section>
+				<section>
+					<h2 style="color:rgb(59, 128, 118);">DOM-based cross-site scripting</h2>
+					<p><span style="color:rgb(104, 126, 167); font-weight: bold">DOM XSS</span> arises when an
+						application contains some client-side JavaScript that processes data from an
+						untrusted source in an unsafe way, usually by writing the data back to the DOM.</p>
+					<p>DOM-based XSS is a variant of both persistent and reflected XSS.</p>
+				</section>
+				<section>
+					Example:
+					<pre style="margin-top: 50px">
+						<code>var search = document.getElementById('search').value;</code><code>var results = document.getElementById('results');</code><code>results.innerHTML = 'You searched for: ' + search;</code>
+					</pre>
+					<pre class="fragment" style="margin-top: 20px"><code>You searched for: <img src=1 onerror='/* Bad stuff here... */'></code></pre>
+				</section>
+			</section>
+
+			<section>
+				<h2 style="color:rgb(59, 128, 118);">What is the difference between traditional XSS and DOM XSS?</h2>
+			</section>
+
+			<section>
+					<h2 style="color:rgb(59, 128, 118);">How to prevent XSS attacks?</h2>
+					<ul class="fragment" style="font-size: 35px; margin-top: 25px;">
+						<li>Escaping user input</li>
+						<li>Sanitizing user input</li>
+						<li>Validating inputs</li>
+						<li>Sanitizing data</li>
+						<li>Avoiding HTML in inputs</li>
+						<li>Content Security Policy</li>
+						<li>Setting web application firewalls (WAF) rules</li>
+						<li>...</li>
+						<ul>
+			</section>
+
+			<section>Thanks for your attention!</section>
+		</div>
+	</div>
+
+	<script src="lib/js/head.min.js"></script>
+	<script src="js/reveal.js"></script>
+
+	<script>
+		// More info about config & dependencies:
+		// - https://github.com/hakimel/reveal.js#configuration
+		// - https://github.com/hakimel/reveal.js#dependencies
+		Reveal.initialize({
+			dependencies: [
+				{
+					src: 'plugin/markdown/marked.js'
+				},
+				{
+					src: 'plugin/markdown/markdown.js'
+				},
+				{
+					src: 'plugin/notes/notes.js',
+					async: true
+				},
+				{
+					src: 'plugin/highlight/highlight.js',
+					async: true,
+					callback: function() { hljs.initHighlightingOnLoad(); }
+				}
+			]
+		});
+	</script>
+</body>
+
+</html>
